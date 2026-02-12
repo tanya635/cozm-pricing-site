@@ -310,62 +310,136 @@
         .savings-callout p { color: var(--text-gray); margin-top: 4px; }
 
         /* ═══════════════════════════════════════
-           FEE ESTIMATORS
+           FEE CALCULATOR
         ═══════════════════════════════════════ */
-        .est-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-        .est-card {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px; padding: 2.5rem;
+        .calc-section { background: var(--gradient-primary); color: var(--white); }
+
+        .calc-panels { display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 720px; }
+        .calc-panel {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 2rem 2.5rem; position: relative;
         }
-        .est-card .tag {
+        .calc-panel .tag {
             display: inline-block; padding: 5px 14px; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 1.2px; margin-bottom: 14px;
         }
         .tag-travel { background: rgba(64,174,188,0.2); color: var(--teal-blue); }
         .tag-unity { background: rgba(189,64,64,0.2); color: #F08080; }
-        .est-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
-        .est-card .desc { font-size: 0.9rem; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
-        .est-card label { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+        .calc-panel h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
 
-        .est-card input[type="range"] {
-            width: 100%; -webkit-appearance: none; appearance: none;
-            height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; outline: none;
+        /* Service row: label + stepper + rate */
+        .svc-row {
+            display: grid; grid-template-columns: 1fr auto;
+            align-items: center; gap: 12px;
+            padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .est-card input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 24px; height: 24px;
-            background: var(--teal-blue); border-radius: 50%; cursor: pointer;
-            border: 3px solid var(--white);
+        .svc-row:last-of-type { border-bottom: none; }
+        .svc-name { font-size: 0.88rem; font-weight: 600; }
+        .svc-detail { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+        .svc-rate {
+            font-size: 0.72rem; color: var(--teal-blue); font-weight: 600;
+            margin-top: 3px; transition: all 0.3s;
         }
-        .est-card input[type="range"]::-moz-range-thumb {
-            width: 24px; height: 24px; background: var(--teal-blue);
-            border-radius: 50%; cursor: pointer; border: 3px solid var(--white);
-        }
-        .range-labels {
-            display: flex; justify-content: space-between;
-            font-size: 0.75rem; color: rgba(255,255,255,0.4);
-            margin-top: 6px; margin-bottom: 20px;
-        }
-        .vol-display { text-align: center; font-size: 1.5rem; font-weight: 800; margin: 8px 0 20px; }
 
-        .est-result {
-            background: rgba(255,255,255,0.08); border-radius: 12px;
-            padding: 2rem; text-align: center;
+        /* Stepper input */
+        .stepper {
+            display: flex; align-items: center; gap: 0;
+            background: rgba(255,255,255,0.06); border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
         }
-        .est-result .rl { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-        .est-result .rv { font-size: 2.2rem; font-weight: 800; color: var(--teal-blue); }
-        .est-result .rc {
-            font-size: 0.9rem; color: rgba(255,255,255,0.4);
-            text-decoration: line-through; margin-top: 8px;
+        .stepper button {
+            width: 36px; height: 36px; border: none;
+            background: rgba(255,255,255,0.05); color: var(--teal-blue);
+            font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            transition: background 0.15s; font-family: inherit;
         }
-        .est-result .rs {
-            display: inline-block; margin-top: 12px;
-            background: rgba(64,174,188,0.15); border: 1px solid rgba(64,174,188,0.3);
-            padding: 6px 18px; border-radius: 50px;
-            color: var(--teal-blue); font-weight: 700; font-size: 0.85rem;
+        .stepper button:hover { background: rgba(64,174,188,0.15); }
+        .stepper input {
+            width: 60px; height: 36px; border: none;
+            background: transparent; color: var(--white);
+            text-align: center; font-size: 0.95rem; font-weight: 700;
+            font-family: inherit; outline: none;
+            -moz-appearance: textfield;
         }
-        .tier-info {
-            margin-top: 14px; font-size: 0.78rem; color: rgba(255,255,255,0.35);
-            text-align: center; line-height: 1.6;
+        .stepper input::-webkit-outer-spin-button,
+        .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Volume tier indicator */
+        .tier-indicator {
+            margin-top: 16px; padding: 10px 14px;
+            background: rgba(255,255,255,0.04); border-radius: 8px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .tier-dots { display: flex; gap: 4px; }
+        .tier-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); transition: all 0.3s;
+        }
+        .tier-dot.active { background: var(--teal-blue); transform: scale(1.3); }
+        .tier-label-text {
+            font-size: 0.78rem; color: rgba(255,255,255,0.5);
+        }
+        .tier-label-text strong { color: var(--teal-blue); }
+
+        /* Breakdown table */
+        .calc-breakdown {
+            margin-top: 20px; width: 100%;
+            border-collapse: collapse;
+        }
+        .calc-breakdown thead th {
+            font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.08em; color: rgba(255,255,255,0.35);
+            padding: 0 0 8px; text-align: left;
+        }
+        .calc-breakdown thead th:last-child,
+        .calc-breakdown thead th:nth-child(3) { text-align: right; }
+        .calc-breakdown tbody td {
+            padding: 6px 0; font-size: 0.85rem;
+            color: rgba(255,255,255,0.7); border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .calc-breakdown tbody td:last-child,
+        .calc-breakdown tbody td:nth-child(3) { text-align: right; font-weight: 600; }
+        .calc-breakdown tbody td:last-child { color: rgba(255,255,255,0.3); text-decoration: line-through; font-weight: 400; }
+        .calc-breakdown tfoot td {
+            padding: 10px 0 0; font-weight: 700; font-size: 0.95rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+        .calc-breakdown tfoot td:nth-child(2) { text-align: right; color: var(--teal-blue); }
+        .calc-breakdown tfoot td:last-child {
+            text-align: right; color: rgba(255,255,255,0.3);
+            text-decoration: line-through; font-weight: 400;
+        }
+
+        /* Summary bar */
+        .calc-summary {
+            margin-top: 2.5rem; display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .calc-summary-box {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 1.5rem; text-align: center;
+        }
+        .calc-summary-box .cs-label {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.4); margin-bottom: 6px;
+        }
+        .calc-summary-box .cs-value { font-size: 2rem; font-weight: 800; }
+        .calc-summary-box .cs-sub { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-top: 4px; }
+        .calc-summary-box.total .cs-value { color: var(--teal-blue); }
+        .calc-summary-box.big4 .cs-value { color: var(--red); text-decoration: line-through; opacity: 0.6; }
+        .calc-summary-box.saving { border-color: rgba(64,174,188,0.3); background: rgba(64,174,188,0.08); }
+        .calc-summary-box.saving .cs-value { color: var(--teal-blue); }
+
+        /* Scale visualiser */
+        .scale-vis {
+            margin-top: 12px; height: 4px; background: rgba(255,255,255,0.08);
+            border-radius: 2px; position: relative; overflow: hidden;
+        }
+        .scale-fill {
+            height: 100%; background: var(--gradient-accent);
+            border-radius: 2px; transition: width 0.5s ease;
         }
 
         /* ═══════════════════════════════════════
@@ -547,8 +621,8 @@
     <section class="slide slide-cover">
         <div class="fade-in">
             <img src="assets/logo-dark.png" alt="The Cozm">
-            <h1>Global Mobility &amp;<br>Business Travel Compliance</h1>
-            <p class="subtitle">Smarter Pricing. Better Outcomes.</p>
+            <h1>Business Travel<br>Compliance</h1>
+            <p class="subtitle">Cozm Travel &mdash; Smarter Pricing. Better Outcomes.</p>
             <div class="meta-info">
                 <span>February 2026</span>
                 <span>&bull;</span>
@@ -673,31 +747,6 @@
             </div>
         </div>
 
-        <div class="fee-section-label" style="margin-top: 3rem;">
-            <span>Cozm Unity</span>
-            <span class="platform-badge">Per Assignee / Year</span>
-        </div>
-        <div class="volume-tiers fade-in">
-            <div class="tier-card">
-                <h4>Standard</h4>
-                <p class="tier-volume">Up to 25 assignees</p>
-                <p class="tier-rate">&pound;2,000</p>
-                <p class="tier-label">Per Assignee / Year</p>
-            </div>
-            <div class="tier-card recommended">
-                <h4>Growth</h4>
-                <p class="tier-volume">26 &ndash; 100 assignees</p>
-                <p class="tier-rate">&pound;1,800</p>
-                <p class="tier-label">Per Assignee / Year</p>
-            </div>
-            <div class="tier-card">
-                <h4>Enterprise</h4>
-                <p class="tier-volume">101+ assignees</p>
-                <p class="tier-rate">&pound;1,500</p>
-                <p class="tier-label">Per Assignee / Year</p>
-            </div>
-        </div>
-
         <div class="fee-note">
             <strong>How volume tiers work:</strong> Your discount tier is determined by total volumes within a 12-month contract period. If your volume moves into a higher tier mid-year, the new rate applies from that point forward &mdash; you are never locked in at a higher price. There are no penalties for reduced volumes.
         </div>
@@ -719,17 +768,17 @@
 
         <div class="card-grid fade-in">
             <div class="card">
-                <h3>Cozm Travel</h3>
-                <p>Automated risk assessments, tax filings, and compliance tracking for cross-border business travellers. Integrates with your travel booking systems.</p>
+                <h3>A1 &amp; CoC Automation</h3>
+                <p>Social security certificate applications completed in under 60 seconds across 32 countries. Automated submission to government portals with real-time tracking.</p>
                 <div class="why-box">
-                    <p><strong>Impact:</strong> Complete filings in under 60 seconds across 45+ countries.</p>
+                    <p><strong>Impact:</strong> 90% less effort from your team. Applications completed in seconds, not days.</p>
                 </div>
             </div>
             <div class="card">
-                <h3>Cozm Unity</h3>
-                <p>End-to-end global assignment management: cost projections, tax equalisation, shadow payroll, compliance calendar, and expatriate tax returns.</p>
+                <h3>Posted Worker Notifications</h3>
+                <p>Fully automated PWN filings across 28 EU countries. Includes equal pay calculations, minimum employment terms, and compliance documentation.</p>
                 <div class="why-box">
-                    <p><strong>Impact:</strong> Single platform replaces fragmented tools and manual processes.</p>
+                    <p><strong>Impact:</strong> Zero manual filing effort. Full audit trail for every notification.</p>
                 </div>
             </div>
         </div>
@@ -791,48 +840,115 @@
         <p class="section-subtitle">See what you'd pay with The Cozm</p>
     </section>
 
-    <!-- FEE ESTIMATORS -->
-    <section class="slide" style="background: var(--gradient-primary); color: var(--white);">
+    <!-- FEE CALCULATOR -->
+    <section class="slide calc-section">
         <div class="slide-header" style="border-bottom-color: rgba(255,255,255,0.1);">
             <h2 style="color: var(--white);">Calculate Your <span>Savings</span></h2>
         </div>
-        <p style="margin-bottom: 2rem; font-size: 1.1rem; color: rgba(255,255,255,0.5);">Drag the sliders to estimate your annual cost. Volume discounts apply automatically.</p>
+        <p style="margin-bottom: 2rem; font-size: 1.05rem; color: rgba(255,255,255,0.45);">Enter your estimated volumes for each service. Rates decrease automatically as total filings increase.</p>
 
-        <div class="est-grid fade-in">
-            <!-- COZM TRAVEL -->
-            <div class="est-card">
+        <div class="calc-panels fade-in">
+
+            <!-- ── COZM TRAVEL ── -->
+            <div class="calc-panel">
                 <span class="tag tag-travel">COZM TRAVEL</span>
                 <h3>Business Travel Compliance</h3>
-                <p class="desc">Automated risk assessments, tax filings, and compliance tracking for cross-border travellers.</p>
-                <label>Estimated traveller assessments per year</label>
-                <input type="range" id="sl-travel" min="10" max="2000" step="10" value="200" oninput="calcTravel()">
-                <div class="range-labels"><span>10</span><span>2,000</span></div>
-                <div class="vol-display" id="vol-travel">200 travellers</div>
-                <div class="est-result">
-                    <div class="rl">Your estimated annual fee</div>
-                    <div class="rv" id="res-travel-cozm">&pound;40,000</div>
-                    <div class="rc" id="res-travel-big4">Big 4 equivalent: &pound;100,000</div>
-                    <div class="rs" id="res-travel-save">You save &pound;60,000/yr</div>
+
+                <div class="svc-row">
+                    <div>
+                        <div class="svc-name">A1 Certificate &mdash; Automated</div>
+                        <div class="svc-detail">14 countries &middot; Completed in under 60 seconds</div>
+                        <div class="svc-rate" id="rate-a1auto">&euro;75 per filing</div>
+                    </div>
+                    <div class="stepper">
+                        <button onclick="step('a1auto',-10)">&#8722;</button>
+                        <input type="number" id="v-a1auto" value="100" min="0" max="9999" oninput="calcAll()">
+                        <button onclick="step('a1auto',10)">+</button>
+                    </div>
                 </div>
-                <div class="tier-info">1&ndash;100: &pound;200/filing &nbsp;|&nbsp; 101&ndash;500: &pound;175/filing &nbsp;|&nbsp; 501+: &pound;150/filing</div>
+
+                <div class="svc-row">
+                    <div>
+                        <div class="svc-name">A1 Certificate &mdash; Semi-Automated</div>
+                        <div class="svc-detail">18 countries &middot; Specialist-assisted submission</div>
+                        <div class="svc-rate" id="rate-a1semi">&euro;195 per filing</div>
+                    </div>
+                    <div class="stepper">
+                        <button onclick="step('a1semi',-10)">&#8722;</button>
+                        <input type="number" id="v-a1semi" value="50" min="0" max="9999" oninput="calcAll()">
+                        <button onclick="step('a1semi',10)">+</button>
+                    </div>
+                </div>
+
+                <div class="svc-row">
+                    <div>
+                        <div class="svc-name">Posted Worker Notification (PWN)</div>
+                        <div class="svc-detail">28 countries &middot; Fully automated</div>
+                        <div class="svc-rate" id="rate-pwn">&euro;45 per filing</div>
+                    </div>
+                    <div class="stepper">
+                        <button onclick="step('pwn',-10)">&#8722;</button>
+                        <input type="number" id="v-pwn" value="200" min="0" max="9999" oninput="calcAll()">
+                        <button onclick="step('pwn',10)">+</button>
+                    </div>
+                </div>
+
+                <div class="svc-row">
+                    <div>
+                        <div class="svc-name">Certificate of Coverage (CoC)</div>
+                        <div class="svc-detail">13 countries &middot; Bilateral agreements</div>
+                        <div class="svc-rate" id="rate-coc">&euro;150 per filing</div>
+                    </div>
+                    <div class="stepper">
+                        <button onclick="step('coc',-10)">&#8722;</button>
+                        <input type="number" id="v-coc" value="30" min="0" max="9999" oninput="calcAll()">
+                        <button onclick="step('coc',10)">+</button>
+                    </div>
+                </div>
+
+                <!-- Volume tier indicator -->
+                <div class="tier-indicator">
+                    <div class="tier-dots">
+                        <div class="tier-dot" id="td-t1"></div>
+                        <div class="tier-dot" id="td-t2"></div>
+                        <div class="tier-dot" id="td-t3"></div>
+                    </div>
+                    <div class="tier-label-text" id="tier-travel-label">
+                        <strong>Standard</strong> &mdash; up to 500 filings
+                    </div>
+                </div>
+                <div class="scale-vis"><div class="scale-fill" id="scale-travel" style="width:10%"></div></div>
+
+                <!-- Breakdown table -->
+                <table class="calc-breakdown">
+                    <thead>
+                        <tr><th>Service</th><th>Qty</th><th>The Cozm</th><th>Big 4</th></tr>
+                    </thead>
+                    <tbody id="tb-travel"></tbody>
+                    <tfoot>
+                        <tr><td>Total</td><td id="tf-travel-cozm"></td><td id="tf-travel-big4"></td></tr>
+                    </tfoot>
+                </table>
             </div>
 
-            <!-- COZM UNITY -->
-            <div class="est-card">
-                <span class="tag tag-unity">COZM UNITY</span>
-                <h3>Global Assignment Management</h3>
-                <p class="desc">End-to-end assignment management: payroll equalisation, tax compliance, immigration, and reporting.</p>
-                <label>Number of active international assignees</label>
-                <input type="range" id="sl-unity" min="5" max="500" step="5" value="50" oninput="calcUnity()">
-                <div class="range-labels"><span>5</span><span>500</span></div>
-                <div class="vol-display" id="vol-unity">50 assignees</div>
-                <div class="est-result">
-                    <div class="rl">Your estimated annual fee</div>
-                    <div class="rv" id="res-unity-cozm">&pound;90,000</div>
-                    <div class="rc" id="res-unity-big4">Big 4 equivalent: &pound;225,000</div>
-                    <div class="rs" id="res-unity-save">You save &pound;135,000/yr</div>
-                </div>
-                <div class="tier-info">1&ndash;25: &pound;2,000/assignee &nbsp;|&nbsp; 26&ndash;100: &pound;1,800/assignee &nbsp;|&nbsp; 101+: &pound;1,500/assignee</div>
+        </div>
+
+        <!-- COMBINED SUMMARY -->
+        <div class="calc-summary fade-in">
+            <div class="calc-summary-box total">
+                <div class="cs-label">Your Cozm Total</div>
+                <div class="cs-value" id="sum-cozm">&euro;0</div>
+                <div class="cs-sub">per year (all services combined)</div>
+            </div>
+            <div class="calc-summary-box big4">
+                <div class="cs-label">Big 4 Equivalent</div>
+                <div class="cs-value" id="sum-big4">&euro;0</div>
+                <div class="cs-sub">per year (estimated)</div>
+            </div>
+            <div class="calc-summary-box saving">
+                <div class="cs-label">Annual Saving</div>
+                <div class="cs-value" id="sum-save">&euro;0</div>
+                <div class="cs-sub" id="sum-pct">0% reduction</div>
             </div>
         </div>
     </section>
@@ -872,8 +988,8 @@
                 <p class="faq-a">Our team includes former Big 4 professionals with <strong>10&ndash;20 years</strong> of experience. Lower pricing reflects technology-driven efficiency. Every filing is reviewed by a qualified professional before submission.</p>
             </div>
             <div class="faq-item">
-                <p class="faq-q">Can you integrate with our existing HRIS?</p>
-                <p class="faq-a"><strong>Yes.</strong> We offer pre-built integrations with 25+ platforms including SAP SuccessFactors, Workday, Oracle HCM, and Concur. Custom API integrations are also available.</p>
+                <p class="faq-q">Can you integrate with our travel management system?</p>
+                <p class="faq-a"><strong>Yes.</strong> We offer pre-built integrations with 25+ platforms including Navan, BCD, CWT, Amex GBT, SAP Concur, and all major HRIS systems. Most integrations go live within days.</p>
             </div>
             <div class="faq-item">
                 <p class="faq-q">What if a filing is rejected by an authority?</p>
@@ -893,10 +1009,6 @@
             </div>
         </div>
 
-        <div class="highlight-box fade-in" style="margin-top: 2rem; background: var(--dark-indigo);">
-            <h3 style="color: var(--teal-blue);">Still Have Questions?</h3>
-            <p>We believe in full transparency &mdash; if it&rsquo;s not listed, you won&rsquo;t be charged for it.</p>
-        </div>
     </section>
 
     <!-- CTA / CONTACT -->
@@ -924,7 +1036,7 @@
             document.getElementById('gate').classList.add('unlocked');
             document.getElementById('app').style.display = 'block';
             sessionStorage.setItem('cozm_ok', '1');
-            requestAnimationFrame(() => { initAnims(); calcTravel(); calcUnity(); });
+            requestAnimationFrame(() => { initAnims(); calcAll(); });
         } else {
             document.getElementById('gate-err').style.display = 'block';
             document.getElementById('gate-pw').value = '';
@@ -938,7 +1050,7 @@
     if (sessionStorage.getItem('cozm_ok') === '1') {
         document.getElementById('gate').classList.add('unlocked');
         document.getElementById('app').style.display = 'block';
-        setTimeout(() => { initAnims(); calcTravel(); calcUnity(); }, 80);
+        setTimeout(() => { initAnims(); calcAll(); }, 80);
     }
 
     // ── Bar Animation ──
@@ -950,33 +1062,93 @@
         document.getElementById('b2').style.width = '100%';
     }
 
-    // ── Calculators ──
-    function fmt(n) { return '\u00A3' + n.toLocaleString('en-GB'); }
+    // ── Multi-variable Calculator ──
+    function eur(n) { return '\u20AC' + n.toLocaleString('en-GB'); }
 
-    function calcTravel() {
-        const v = parseInt(document.getElementById('sl-travel').value);
-        let rate = 200;
-        if (v > 500) rate = 150;
-        else if (v > 100) rate = 175;
-        const big4 = 500;
-        const c = v * rate, b = v * big4, s = b - c;
-        document.getElementById('vol-travel').textContent = v.toLocaleString() + ' travellers';
-        document.getElementById('res-travel-cozm').textContent = fmt(c);
-        document.getElementById('res-travel-big4').textContent = 'Big 4 equivalent: ' + fmt(b);
-        document.getElementById('res-travel-save').textContent = 'You save ' + fmt(s) + '/yr';
+    // Base rates (Cozm)
+    const RATES = {
+        a1auto: { base: 75, big4: 250, name: 'A1 Automated' },
+        a1semi: { base: 195, big4: 500, name: 'A1 Semi-Auto' },
+        pwn:    { base: 45,  big4: 150, name: 'PWN' },
+        coc:    { base: 150, big4: 400, name: 'CoC' }
+    };
+
+    // Volume discount multiplier based on TOTAL filings
+    function travelDiscount(totalFilings) {
+        if (totalFilings > 2000) return { mult: 0.85, tier: 3, label: 'Enterprise', desc: '2,001+ filings &mdash; 15% off' };
+        if (totalFilings > 500)  return { mult: 0.90, tier: 2, label: 'Growth', desc: '501\u20132,000 filings &mdash; 10% off' };
+        return { mult: 1.00, tier: 1, label: 'Standard', desc: 'up to 500 filings' };
     }
 
-    function calcUnity() {
-        const v = parseInt(document.getElementById('sl-unity').value);
-        let rate = 2000;
-        if (v > 100) rate = 1500;
-        else if (v > 25) rate = 1800;
-        const big4 = 4500;
-        const c = v * rate, b = v * big4, s = b - c;
-        document.getElementById('vol-unity').textContent = v.toLocaleString() + ' assignees';
-        document.getElementById('res-unity-cozm').textContent = fmt(c);
-        document.getElementById('res-unity-big4').textContent = 'Big 4 equivalent: ' + fmt(b);
-        document.getElementById('res-unity-save').textContent = 'You save ' + fmt(s) + '/yr';
+    function gv(id) {
+        const v = parseInt(document.getElementById('v-' + id).value) || 0;
+        return Math.max(0, v);
+    }
+
+    function step(id, delta) {
+        const el = document.getElementById('v-' + id);
+        let v = (parseInt(el.value) || 0) + delta;
+        if (v < 0) v = 0;
+        el.value = v;
+        calcAll();
+    }
+
+    function calcAll() {
+        // Read volumes
+        const vols = { a1auto: gv('a1auto'), a1semi: gv('a1semi'), pwn: gv('pwn'), coc: gv('coc') };
+        const totalFilings = vols.a1auto + vols.a1semi + vols.pwn + vols.coc;
+        const vAssignee = gv('assignee');
+
+        // Travel discount
+        const disc = travelDiscount(totalFilings);
+
+        // Update tier dots - travel
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById('td-t' + i).classList.toggle('active', i <= disc.tier);
+        }
+        document.getElementById('tier-travel-label').innerHTML =
+            '<strong>' + disc.label + '</strong> &mdash; ' + disc.desc;
+        document.getElementById('scale-travel').style.width =
+            Math.min(100, Math.max(5, (totalFilings / 3000) * 100)) + '%';
+
+        // Update per-service rates display
+        const keys = ['a1auto', 'a1semi', 'pwn', 'coc'];
+        keys.forEach(k => {
+            const r = Math.round(RATES[k].base * disc.mult);
+            document.getElementById('rate-' + k).textContent = eur(r) + ' per filing' +
+                (disc.mult < 1 ? ' (' + Math.round((1 - disc.mult) * 100) + '% off)' : '');
+        });
+
+        // Build travel breakdown
+        let travelCozm = 0, travelBig4 = 0;
+        let tbHtml = '';
+        keys.forEach(k => {
+            const qty = vols[k];
+            if (qty === 0) return;
+            const cRate = Math.round(RATES[k].base * disc.mult);
+            const c = qty * cRate;
+            const b = qty * RATES[k].big4;
+            travelCozm += c;
+            travelBig4 += b;
+            tbHtml += '<tr><td>' + RATES[k].name + '</td><td>' + qty + '</td><td>' + eur(c) + '</td><td>' + eur(b) + '</td></tr>';
+        });
+        if (totalFilings === 0) {
+            tbHtml = '<tr><td colspan="4" style="color:rgba(255,255,255,0.25);text-align:center;padding:16px 0;">Enter filing volumes above</td></tr>';
+        }
+        document.getElementById('tb-travel').innerHTML = tbHtml;
+        document.getElementById('tf-travel-cozm').textContent = eur(travelCozm);
+        document.getElementById('tf-travel-big4').textContent = eur(travelBig4);
+
+        // Combined summary
+        const totalCozm = travelCozm;
+        const totalBig4 = travelBig4;
+        const totalSave = totalBig4 - totalCozm;
+        const pct = totalBig4 > 0 ? Math.round((totalSave / totalBig4) * 100) : 0;
+
+        document.getElementById('sum-cozm').textContent = eur(totalCozm);
+        document.getElementById('sum-big4').textContent = eur(totalBig4);
+        document.getElementById('sum-save').textContent = eur(totalSave);
+        document.getElementById('sum-pct').textContent = pct + '% reduction in compliance spend';
     }
 
     // ── Scroll Fade-In ──
