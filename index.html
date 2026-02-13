@@ -406,7 +406,7 @@
             padding: 10px 0 0; font-weight: 700; font-size: 0.95rem;
             border-top: 1px solid rgba(255,255,255,0.12);
         }
-        .calc-breakdown tfoot td:nth-child(2) { text-align: right; color: var(--teal-blue); }
+        .calc-breakdown tfoot td:nth-child(3) { text-align: right; color: var(--teal-blue); }
         .calc-breakdown tfoot td:last-child {
             text-align: right; color: rgba(255,255,255,0.3);
             text-decoration: line-through; font-weight: 400;
@@ -926,7 +926,7 @@
                     </thead>
                     <tbody id="tb-travel"></tbody>
                     <tfoot>
-                        <tr><td>Total</td><td id="tf-travel-cozm"></td><td id="tf-travel-big4"></td></tr>
+                        <tr><td>Total</td><td></td><td id="tf-travel-cozm"></td><td id="tf-travel-big4"></td></tr>
                     </tfoot>
                 </table>
             </div>
@@ -1097,8 +1097,6 @@
         // Read volumes
         const vols = { a1auto: gv('a1auto'), a1semi: gv('a1semi'), pwn: gv('pwn'), coc: gv('coc') };
         const totalFilings = vols.a1auto + vols.a1semi + vols.pwn + vols.coc;
-        const vAssignee = gv('assignee');
-
         // Travel discount
         const disc = travelDiscount(totalFilings);
 
